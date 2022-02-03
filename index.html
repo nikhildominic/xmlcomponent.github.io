@@ -1,0 +1,50 @@
+<html>
+	<script>
+		var textForClip = "";
+
+		var copyToClipBoard = ()=>{
+			console.log("here",textForClip);
+			textForClip?navigator.clipboard.writeText(textForClip):'';
+		}
+		var xmladded = ()=>{
+			textForClip = "";
+			var text = document.getElementById("txt").value
+			parser = new DOMParser();
+			xmlDoc = parser.parseFromString(text,"text/xml");
+			x = xmlDoc.getElementsByTagName('Component');
+			console.log(x.length);
+			var res=""
+			var textForMachine = ""
+			var permissions = document.getElementById("rules").value
+    		for (i = 0; i < x.length; i++) {
+        		res += x[i].getAttribute('Name') + " " + "<br/> ";
+				textForClip += x[i].getAttribute('Name')+ " " +permissions+"\n"
+				textForMachine +=  x[i].getAttribute('Name')+ " " +permissions+ "<br/> "
+    		}
+			if(res){
+				document.getElementById("result").innerHTML =res
+				document.getElementById("resultMachine").innerHTML = textForMachine
+			}
+		}
+	</script>
+
+<label><b>Import rules</b></label><br>
+<input type="text" value=" test tetst test tetst test tetst" id="rules">
+<br>
+
+<label><b>XML Goes here</b></label><br>
+
+<textarea onchange=xmladded() placeholder="XML Goes here" id = "txt"> </textarea>
+
+<br><br>
+<label><b>Components</b></label><br><hr>
+<p id="result">
+
+</p>
+<label><b>Components for Import</b></label><br>
+<input type="Button" value="Copy to clipboard" id="clipbutton" onclick="copyToClipBoard()"/>
+<hr>
+<p id="resultMachine">
+
+</p>
+</html>
